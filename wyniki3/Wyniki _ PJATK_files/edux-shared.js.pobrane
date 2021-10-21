@@ -1,0 +1,18 @@
+function ktdatatable_set_group_action_form(ktDataTable, selectedNumberId, groupActionFormId){
+    const checkedNodes = ktDataTable.rows('.kt-datatable__row--active').nodes();
+    const count = checkedNodes.length;
+
+    $(`#${selectedNumberId}`).html(count);
+    if (count > 0) {
+        $(`#${groupActionFormId}`).collapse('show');
+    } else {
+        $(`#${groupActionFormId}`).collapse('hide');
+    }
+}
+
+function ktdatatable_get_selected_ids(ktDataTable){
+    return ktDataTable.rows('.kt-datatable__row--active').
+    nodes().
+    find('.kt-checkbox--single > [type="checkbox"]').
+    map((i, chk) => $(chk).val());
+}

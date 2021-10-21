@@ -1,0 +1,6 @@
+ipconfig - win
+ifconfig - linux
+
+
+
+WIRESHARK
