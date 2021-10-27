@@ -35,7 +35,6 @@ public class TCPResponseHandler implements ResponseHandler {
         }
 
         socket.close();
-        //TODO 5 wywołaj metodę, która zamknie gniazdo służące do połączenia z serwerem
     }
 
 }
