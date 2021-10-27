@@ -16,14 +16,11 @@ public class TCPRequestReceiver implements RequestReceiver {
     }
 
     public void startListening() throws IOException {
-        socket = new ServerSocket(port);
-        RequestHandler handler = acceptConnection();
-        while (true) handler.handleRequest();
-        // TODO 1 zaimplementuj metodę w taki sposób, aby nie zmieniać nieoznaczonych fragmentów kodu
-    }
+        socket = new ServerSocket(getPort());
+        }
 
     public RequestHandler acceptConnection() throws IOException{
-        return new TCPRequestHandler(socket.accept()/* TODO 2 użyj odpowiedniej metody aby zaakceptować połączenie od klienta*/);
+        return new TCPRequestHandler(socket.accept());
     }
 
     public int getPort() {
