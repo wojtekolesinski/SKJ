@@ -60,7 +60,7 @@ public class TCPRequestHandler implements RequestHandler {
             fileInputStream.close();
             logger.info("File sent!");
 
-            //TODO 3 użyj metody, która pozwoli klientowi rozpoznać, że serwer skończył przesyłać dane
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

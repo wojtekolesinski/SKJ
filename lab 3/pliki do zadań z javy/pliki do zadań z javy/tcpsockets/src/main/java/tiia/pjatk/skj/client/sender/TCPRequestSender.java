@@ -55,9 +55,8 @@ public class TCPRequestSender implements RequestSender {
     }
 
     private Socket connect() throws IOException {
-        return new Socket(server, port);
-        //TODO 4 zaimplementuj metodę w taki sposób, aby zwracała odpowiednią wartość
-    }
+        return new Socket(getServer(), getPort());
+        }
 
     public String getServer() {
         return server;
