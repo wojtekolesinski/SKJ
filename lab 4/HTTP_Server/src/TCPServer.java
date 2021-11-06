@@ -10,7 +10,6 @@ public class TCPServer {
             ServerSocket serverSocket = new ServerSocket(9000);
 
             ExecutorService threadService = Executors.newFixedThreadPool(3);
-
             while (true) {
                 threadService.submit(new TCPHandler(serverSocket.accept()));
 
