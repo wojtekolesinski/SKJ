@@ -13,9 +13,7 @@ public class Main {
     static String address = "172.21.48.141";
     static int flag = 177938;
 
-//    static int port = 25559;
-//    static String address = "172.21.48.1";
-//    static int flag = 151092;
+
 
     /* Zadanie polega na komunikacji z użyciem protokołu TCP. Protokół komunikacji jest tekstowy: odebranie pojedyńczej
     odpowiedzi polega na wczytaniu jedej linii tekstu; analogicznie, wysłanie pojedyńczej odpowiedzi polega na wysłaniu

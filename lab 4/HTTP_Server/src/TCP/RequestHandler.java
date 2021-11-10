@@ -9,6 +9,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static TCP.Util.*;
+
 public class RequestHandler implements Runnable {
 
     private Socket clientSocket;
@@ -42,21 +44,12 @@ public class RequestHandler implements Runnable {
 
     public RequestHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-//        System.out.println("sajdgf");
         try {
-            clientSocket.setSoTimeout(5000);
+            clientSocket.setSoTimeout(10000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
     }
-
-    public long gcd(long n1, long n2) {
-        if (n2 == 0) {
-            return n1;
-        }
-        return gcd(n2, n1 % n2);
-    }
-
 
     @Override
     public void run() {
@@ -64,60 +57,43 @@ public class RequestHandler implements Runnable {
                 PrintWriter outToClient = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ) {
-            String line = inFromClient.readLine();
-            outToClient.println(line);
-            System.out.println(line);
-            Server.addClientInput(Long.parseLong(line));
+            // nawiązanie komunikacji z serwerem
+            String firstInput = inFromClient.readLine();
+            outToClient.println(firstInput);
+            System.out.println("Pierwsza linia: " + firstInput);
+            Server.addClientInput(Long.parseLong(firstInput));
 
-            List<Long> numbers = new ArrayList<>();
+            Thread.sleep(1000);
 
             // 2. W 5 kolejnych liniach odbierz 5 liczb(y) naturalne(ych). Policz ich największy wspólny dzielnik i wynik odeślij.
-            long l1 = Long.parseLong(inFromClient.readLine());
-            long l2 = Long.parseLong(inFromClient.readLine());
-            long l3 = Long.parseLong(inFromClient.readLine());
-            long l4 = Long.parseLong(inFromClient.readLine());
-            long l5 = Long.parseLong(inFromClient.readLine());
-            System.out.println();
-            System.out.println(l1);
-            System.out.println(l2);
-            System.out.println(l3);
-            System.out.println(l4);
-            System.out.println(l5);
-            System.out.println();
-
-
-            long gcdResult = gcd(gcd(gcd(l1, l2), gcd(l3, l4)), l5);
+            List<Long> numbers = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                numbers.add(Long.parseLong(inFromClient.readLine()));
+            }
+            long gcdResult = gcdFromList(numbers);
             outToClient.println(gcdResult);
-            System.out.println(inFromClient.readLine());
-
 
             // 3. Wyślij numer portu z którego się komunikujesz.
             outToClient.println(Server.port);
 
-            // 4. Wyślij największy wspólny dizelnik liczb otrzymanych przez Twoj serwer od wszystkich klientów w ich pierwszych komunikatach (tj., w pkt. 1 zadania).
-            numbers = Server.getClientInputs();
-            gcdResult = numbers.get(0);
-            for (int i = 1; i < numbers.size(); i++) {
-                gcdResult = gcd(gcdResult, numbers.get(i));
-            }
-//            System.out.println(inFromClient.readLine());
-
-            outToClient.println(gcdResult);
+            // 4. Wyślij największy wspólny dzielnik liczb otrzymanych przez Twoj serwer od wszystkich klientów w ich pierwszych komunikatach (tj., w pkt. 1 zadania).
+            outToClient.println(Server.getGcd());
 
             // 5. Odbierz napis. Usuń z niego wszystkie wystąpienia 4 i odeślij wynik.
+            String line;
             line = inFromClient.readLine();
             line = line.replace("4", "");
             outToClient.println(line);
 
             // 6. Wyślij sumę liczb otrzymanych przez Twoj serwer od wszystkich klientów w ich pierwszych komunikatach (tj., w pkt. 1 zadania).
-            long sum = numbers.stream().mapToLong(x -> x).sum();
-            outToClient.println(sum);
+            outToClient.println(Server.getClientInputsSum());
 
+            // Odbierz finalną flagę i wpisz ją poniżej
             String finalFlag = inFromClient.readLine();
             System.out.println("final:" + finalFlag);
 
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
