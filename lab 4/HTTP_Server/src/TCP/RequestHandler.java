@@ -80,8 +80,7 @@ public class RequestHandler implements Runnable {
             outToClient.println(Server.getGcd());
 
             // 5. Odbierz napis. Usuń z niego wszystkie wystąpienia 4 i odeślij wynik.
-            String line;
-            line = inFromClient.readLine();
+            String line = inFromClient.readLine();
             line = line.replace("4", "");
             outToClient.println(line);
 
