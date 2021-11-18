@@ -1,23 +1,18 @@
 package TCP;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import static TCP.Util.*;
 
 public class Server {
     static int port = 54678;
 //    static String address = "10.13.58.2";
     static String address = "172.23.129.29";
     static List<Long> clientInputs;
-
-
-
-
 
     /* Zadanie polega na komunikacji z użyciem protokołu TCP. Protokół komunikacji jest tekstowy: odebranie pojedyńczej
     odpowiedzi polega na wczytaniu jedej linii tekstu; analogicznie, wysłanie pojedyńczej odpowiedzi polega na wysłaniu
@@ -53,14 +48,13 @@ public class Server {
             ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             while (true) {
+<<<<<<< HEAD
                 System.out.println("im here");
+=======
+>>>>>>> 0b32880dcc4bd5f89d0cf0408486f7f130c909ae
                 executorService.submit(new RequestHandler(serverSocket.accept()));
                 System.out.println("me too");
             }
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +64,15 @@ public class Server {
         clientInputs.add(input);
     }
 
-    public static synchronized List<Long> getClientInputs() {
-        return clientInputs;
+    public static void printCI() {
+        System.out.println(clientInputs);
+    }
+
+    public static long getGcd() {
+        return gcdFromList(clientInputs);
+    }
+
+    public static long getClientInputsSum() {
+        return clientInputs.stream().mapToLong(x->x).sum();
     }
 }

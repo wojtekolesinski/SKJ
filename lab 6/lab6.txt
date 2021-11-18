@@ -1,0 +1,7 @@
+1. Adres IP serwera, do którego zostało wysłane żądanie DNS - 128.238.13.98
+2. Nr portu serwera, z którego wysłana zostałą odpowiedź - 53
+3. Identyfikator transakcji odpowiedzi serwera - 0x00001f8e
+4. Ile Resource Records było w odpowiedzi serwera - 2
+5. Znajdz pakiet TCP SYN następujący po otrzymaniu odpowiedzi od serwera DNS. Znajdź adres IP destynacji. 
+Jeżeli adres IP destynacji był zawarty w poprzedzającej odowiedzi serwera DNS, to podaj ten adres.
+
