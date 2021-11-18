@@ -11,7 +11,8 @@ import java.util.concurrent.Executors;
 
 public class Server {
     static int port = 54678;
-    static String address = "10.13.58.2";
+//    static String address = "10.13.58.2";
+    static String address = "172.23.129.29";
     static List<Long> clientInputs;
 
 
@@ -52,8 +53,9 @@ public class Server {
             ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             while (true) {
-//                System.out.println("im here");
+                System.out.println("im here");
                 executorService.submit(new RequestHandler(serverSocket.accept()));
+                System.out.println("me too");
             }
 
 

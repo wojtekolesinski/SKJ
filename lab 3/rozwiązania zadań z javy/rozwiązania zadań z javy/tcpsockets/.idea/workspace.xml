@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a57fd21d-bf40-4c16-8710-40b69d8dcee3" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../TCPClient/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/client/handler/TCPResponseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/client/handler/TCPResponseHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/client/sender/TCPRequestSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/client/sender/TCPRequestSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/server/handler/TCPRequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/server/handler/TCPRequestHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/server/receiver/TCPRequestReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../pliki do zadań z javy/pliki do zadań z javy/tcpsockets/src/main/java/tiia/pjatk/skj/server/receiver/TCPRequestReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a57fd21d-bf40-4c16-8710-40b69d8dcee3" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -330,6 +321,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/tiia/pjatk/skj/MainApp.java">
