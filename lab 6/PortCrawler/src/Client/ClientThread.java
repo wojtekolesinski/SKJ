@@ -28,7 +28,7 @@ public class ClientThread implements Callable<Integer> {
         String response = null;
         try (
                 Socket clientSocket = new Socket(address, port);
-                PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream());
+                PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
         ) {
             if (clientSocket.isConnected())

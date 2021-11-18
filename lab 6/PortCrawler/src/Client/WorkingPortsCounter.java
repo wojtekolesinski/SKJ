@@ -9,8 +9,10 @@ import java.util.stream.IntStream;
 
 public class WorkingPortsCounter {
     private static int firstPort = 31249;
-    private static int lastPort = 31754;
-    private static String address = "172.21.48.191";
+    private static int lastPort = firstPort + 10;
+//    private static int lastPort = 31754;
+//    private static String address = "172.21.48.191";
+    private static String address = "127.0.0.1";
     private static int flag = 509166;
     static AtomicInteger workingPorts;
 
@@ -18,9 +20,25 @@ public class WorkingPortsCounter {
         workingPorts = new AtomicInteger(0);
     }
 
+    public static int getFlag() {
+        return flag;
+    }
+
+    public static String getAddress() {
+        return address;
+    }
+
+    public static int getFirstPort() {
+        return firstPort;
+    }
+
+    public static int getLastPort() {
+        return lastPort;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         ExecutorService threads = Executors.newFixedThreadPool(100);
-        CountDownLatch latch = new CountDownLatch(lastPort - firstPort + 1);
+        CountDownLatch latch = new CountDownLatch(lastPort - firstPort);
 
         List<Callable<Integer>> clients =  IntStream.rangeClosed(firstPort, lastPort)
                 .mapToObj(x -> new ClientThread(flag, x, address, latch))
@@ -40,18 +58,20 @@ public class WorkingPortsCounter {
             e.printStackTrace();
         }
 
-        results.stream().filter(f -> !f.isCancelled()).mapToInt(integerFuture -> {
-            try {
-                return integerFuture.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            return -1;
-        }).filter(x -> x != -1)
+        threads.shutdownNow();
+
+//        results.stream().filter(f -> !f.isCancelled()).mapToInt(integerFuture -> {
+//            try {
+//                return integerFuture.get();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//            return -1;
+//        }).filter(x -> x != -1)
+////                .forEach(System.out::println);
 //                .forEach(System.out::println);
-                .forEach(System.out::println);
 
         System.out.println(workingPorts.get());
 //        System.out.println(X);
