@@ -31,8 +31,8 @@ public class ClientThread implements Callable<Integer> {
                 PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
         ) {
-            if (clientSocket.isConnected())
-                clientSocket.setSoTimeout(1000);
+//            if (clientSocket.isConnected())
+            clientSocket.setSoTimeout(5000);
             outToServer.println(flag);
             response = inFromServer.readLine();
             WorkingPortsCounter.workingPorts.getAndIncrement();
@@ -45,7 +45,7 @@ public class ClientThread implements Callable<Integer> {
             e.printStackTrace();
         } finally {
             latch.countDown();
-            return response == null ? null : Integer.parseInt(response);
         }
+        return response == null ? null : Integer.parseInt(response);
     }
 }

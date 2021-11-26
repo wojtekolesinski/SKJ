@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
 
 public class WorkingPortsCounter {
     private static int firstPort = 31249;
-    private static int lastPort = firstPort + 10;
-//    private static int lastPort = 31754;
+//    private static int lastPort = firstPort + 10;
+    private static int lastPort = 31754;
 //    private static String address = "172.21.48.191";
     private static String address = "127.0.0.1";
     private static int flag = 509166;
