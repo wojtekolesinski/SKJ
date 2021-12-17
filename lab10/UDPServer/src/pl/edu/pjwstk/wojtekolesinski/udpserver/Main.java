@@ -10,9 +10,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Main {
-    public final static int FLAG = 188082;
-    public final static int PORT = 39799;
-    public final static String IP = "172.21.48.118";
+    public final static int FLAG = 120812;
+    public final static int PORT = 35559;
+    public final static String IP = "172.21.48.145";
 
     public static void main(String[] args) {
         try (
@@ -28,5 +28,3 @@ public class Main {
     }
 
 }
-// 459008252
-// 459008252

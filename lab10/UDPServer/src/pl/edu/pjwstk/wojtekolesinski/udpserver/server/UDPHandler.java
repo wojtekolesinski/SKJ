@@ -90,6 +90,14 @@ public class UDPHandler implements Runnable{
                         .collect(Collectors.toList());
     }
 
+    public int maxPower(int x) {
+        int k = 1;
+        while (Math.pow(k, 2) < x) {
+            k++;
+        }
+        return k-1;
+    }
+
     @Override
     public void run() {
         // wczytanie jednej linii tekstu i odeslanie jej
@@ -99,34 +107,48 @@ public class UDPHandler implements Runnable{
         sendData(data);
         index++;
 
-        // wczytanie 4  kolejnych liczb i odeslanie ich nwd
-        waitForData(index + 3);
-        List<Integer> numbers = getDataAtIndexRange(index, index+3).stream().map(Integer::parseInt).collect(Collectors.toList());
-        data = String.valueOf(gcdFromList(numbers));
-        sendData(data);
-        index += 4;
-
-        // wyślij sumę liczb otrzymanych od wszystkich klientów
-        sendData(String.valueOf(getFirstInputs().stream().reduce(0, Integer::sum)));
-
-        // wyślij nwd tych liczb
+        // 2. Wyślij największy wspólny dizelnik liczb otrzymanych przez Twoj serwer od wszystkich
+        // klientów w ich pierwszych komunikatach (tj., w pkt. 1 zadania).
+        try {
+            TimeUnit.MILLISECONDS.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         sendData(String.valueOf(gcdFromList(getFirstInputs())));
 
-        // odbierz napis, usun wszystkie wystapienia 3 i odeslij wynik
+        // 3. Odbierz napis. Usuń z niego wszystkie wystąpienia 6 i odeślij wynik.
         waitForData(index);
         data = getDataAtIndex(index);
-        System.out.println(data);
-        data = data.replace("3", "");
+//        System.out.println(data);
+        data = data.replace("6", "");
         sendData(data);
         index++;
 
-        // wyślij numer portu z którego się komunikujesz
+        // 4. W 5 kolejnych liniach odbierz 5 liczb(y) naturalnych(e). Policz sumę tych liczb i odeślij.
+        waitForData(index + 4);
+//        List<Integer> numbers =
+        int sum = getDataAtIndexRange(index, index+4).stream().map(Integer::parseInt).reduce(0, Integer::sum);
+        data = String.valueOf(sum);
+        sendData(data);
+        index += 5;
+
+        // 5. Wyślij numer portu z którego się komunikujesz.
         sendData(String.valueOf(Server.SERVER_SOCKET_PORT));
+        // 6. Odbierz liczbę naturalną x. Oblicz największą liczbę naturalną k, taką, że k podniesione do potęgi 2 jest nie większe niż wartość x. Odeślij wartość k.
+        waitForData(index);
+        data = getDataAtIndex(index);
+        int k = maxPower(Integer.parseInt(data));
+        sendData(String.valueOf(k));
+        index++;
 
         // odbierz finalną flagę
         waitForData(index);
         data = getDataAtIndex(index);
         System.err.println(data);
+
+    // 534773679
+    // 534773679
+    // 534773679
 
     }
 }
