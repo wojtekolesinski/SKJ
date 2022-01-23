@@ -7,18 +7,17 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class UDPHandler implements Runnable{
-    private DatagramPacket receivedPacket;
     private final DatagramSocket serverSocket;
-    private final Map<String, List<String>> clientsMap;
+    private final Map<String, Queue<String>> clientsMap;
     private final InetAddress clientAddress;
     private final int clientPort;
 
-    public UDPHandler(DatagramPacket receivedPacket, DatagramSocket serverSocket, Map<String, List<String>> clientsMap){
-        this.receivedPacket = receivedPacket;
+    public UDPHandler(DatagramPacket receivedPacket, DatagramSocket serverSocket, Map<String, Queue<String>> clientsMap){
         this.serverSocket = serverSocket;
         this.clientsMap = clientsMap;
         this.clientAddress = receivedPacket.getAddress();
@@ -33,15 +32,22 @@ public class UDPHandler implements Runnable{
         return String.format("%s:%d", clientAddress.getHostAddress(), clientPort);
     }
 
-    private String getDataAtIndex(int index) {
-        return clientsMap.get(getAddressAndPort()).get(index);
+    private String getData() {
+        /*
+        * returns next String in Queue
+        * */
+        return clientsMap.get(getAddressAndPort()).poll();
     }
 
-    private List<String> getDataAtIndexRange(int start, int end) {
+    private List<String> getDataAsList(int howMany) {
+        /*
+        * returns List of n next Strings
+        * */
+
         List<String> data = new ArrayList<>();
 
-        for (int i = start; i <= end; i++) {
-            data.add(getDataAtIndex(i));
+        for (int i = 0; i < howMany; i++) {
+            data.add(getData());
         }
 
         return data;
@@ -56,8 +62,8 @@ public class UDPHandler implements Runnable{
         }
     }
 
-    private void waitForData(int index) {
-        while (clientsMap.get(getAddressAndPort()).size() <= index) {
+    private void waitForData(int howMany) {
+        while (clientsMap.get(getAddressAndPort()).size() < howMany) {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
@@ -67,7 +73,7 @@ public class UDPHandler implements Runnable{
     }
 
     public int gcdFromList(List<Integer> list) {
-        return list.stream().reduce(0, (total, element) -> gcd(total, element));
+        return list.stream().reduce(0, this::gcd);
     }
 
     public int gcd(int a, int b) {
@@ -84,9 +90,9 @@ public class UDPHandler implements Runnable{
     }
 
     public List<Integer> getFirstInputs() {
-        return clientsMap.values()
+        return Server.FIRST_INPUTS
                         .stream()
-                        .map(list -> Integer.parseInt(list.get(0)))
+                        .map(Integer::parseInt)
                         .collect(Collectors.toList());
     }
 
@@ -101,11 +107,9 @@ public class UDPHandler implements Runnable{
     @Override
     public void run() {
         // wczytanie jednej linii tekstu i odeslanie jej
-        int index = 0;
-        waitForData(index);
-        String data = getDataAtIndex(index);
+        waitForData(1);
+        String data = getData();
         sendData(data);
-        index++;
 
         // 2. Wyślij największy wspólny dizelnik liczb otrzymanych przez Twoj serwer od wszystkich
         // klientów w ich pierwszych komunikatach (tj., w pkt. 1 zadania).
@@ -117,33 +121,30 @@ public class UDPHandler implements Runnable{
         sendData(String.valueOf(gcdFromList(getFirstInputs())));
 
         // 3. Odbierz napis. Usuń z niego wszystkie wystąpienia 6 i odeślij wynik.
-        waitForData(index);
-        data = getDataAtIndex(index);
-//        System.out.println(data);
+        waitForData(1);
+        data = getData();
         data = data.replace("6", "");
         sendData(data);
-        index++;
 
         // 4. W 5 kolejnych liniach odbierz 5 liczb(y) naturalnych(e). Policz sumę tych liczb i odeślij.
-        waitForData(index + 4);
+        waitForData(5);
 //        List<Integer> numbers =
-        int sum = getDataAtIndexRange(index, index+4).stream().map(Integer::parseInt).reduce(0, Integer::sum);
+        int sum = getDataAsList(5).stream().map(Integer::parseInt).reduce(0, Integer::sum);
         data = String.valueOf(sum);
         sendData(data);
-        index += 5;
 
         // 5. Wyślij numer portu z którego się komunikujesz.
         sendData(String.valueOf(Server.SERVER_SOCKET_PORT));
+
         // 6. Odbierz liczbę naturalną x. Oblicz największą liczbę naturalną k, taką, że k podniesione do potęgi 2 jest nie większe niż wartość x. Odeślij wartość k.
-        waitForData(index);
-        data = getDataAtIndex(index);
+        waitForData(1);
+        data = getData();
         int k = maxPower(Integer.parseInt(data));
         sendData(String.valueOf(k));
-        index++;
 
         // odbierz finalną flagę
-        waitForData(index);
-        data = getDataAtIndex(index);
+        waitForData(1);
+        data = getData();
         System.err.println(data);
 
     // 534773679

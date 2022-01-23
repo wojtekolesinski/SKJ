@@ -9,7 +9,8 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static final int SERVER_SOCKET_PORT = 9876;
-    public static final String SERVER_SOCKET_IP = "172.23.129.72";
+    public static final String SERVER_SOCKET_IP = "172.23.129.72"; // your own IP (in ipconfig/ifconfig)
+    public static final List<String> FIRST_INPUTS = new ArrayList<>();
 
     public static String getData(DatagramPacket packet) {
         return new String(packet.getData(), 0, packet.getLength() - 1);
@@ -19,7 +20,7 @@ public class Server {
 
     public static void main(String[] args) {
         ExecutorService threadPool = Executors.newFixedThreadPool(5);
-        Map<String, List<String>> clients = new LinkedHashMap<>();
+        Map<String, Queue<String>> clients = new LinkedHashMap<>();
         String IPAndPort;
 
         try (DatagramSocket serverSocket = new DatagramSocket(SERVER_SOCKET_PORT)) {
@@ -34,7 +35,8 @@ public class Server {
                 String fromServer = getData(receivedPacket);
 
                 if (!clients.containsKey(IPAndPort)) {
-                    clients.put(IPAndPort, new ArrayList<>());
+                    FIRST_INPUTS.add(fromServer);
+                    clients.put(IPAndPort, new PriorityQueue<>());
                     threadPool.submit(new UDPHandler(receivedPacket, serverSocket, clients));
                 }
                 clients.get(IPAndPort).add(fromServer);
