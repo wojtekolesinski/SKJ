@@ -1,0 +1,2 @@
+# Starting a node
+## GodNode?
