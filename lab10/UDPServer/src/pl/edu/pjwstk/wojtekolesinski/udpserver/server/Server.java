@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static final int SERVER_SOCKET_PORT = 9876;
-    public static final String SERVER_SOCKET_IP = "172.23.129.72"; // your own IP (in ipconfig/ifconfig)
+    public static final String SERVER_SOCKET_IP = "172.23.130.38"; // your own IP (in ipconfig/ifconfig)
     public static final List<String> FIRST_INPUTS = new ArrayList<>();
 
     public static String getData(DatagramPacket packet) {
@@ -45,7 +45,5 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }

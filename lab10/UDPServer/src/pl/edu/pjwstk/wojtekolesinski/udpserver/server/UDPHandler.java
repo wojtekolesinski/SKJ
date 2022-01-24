@@ -36,6 +36,7 @@ public class UDPHandler implements Runnable{
         /*
         * returns next String in Queue
         * */
+        waitForData(1);
         return clientsMap.get(getAddressAndPort()).poll();
     }
 
@@ -45,9 +46,9 @@ public class UDPHandler implements Runnable{
         * */
 
         List<String> data = new ArrayList<>();
-
+        waitForData(howMany);
         for (int i = 0; i < howMany; i++) {
-            data.add(getData());
+            data.add(clientsMap.get(getAddressAndPort()).poll());
         }
 
         return data;
@@ -60,6 +61,10 @@ public class UDPHandler implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendData(int data) {
+        sendData(String.valueOf(data));
     }
 
     private void waitForData(int howMany) {
@@ -104,10 +109,11 @@ public class UDPHandler implements Runnable{
         return k-1;
     }
 
+
+
     @Override
     public void run() {
         // wczytanie jednej linii tekstu i odeslanie jej
-        waitForData(1);
         String data = getData();
         sendData(data);
 
@@ -118,32 +124,27 @@ public class UDPHandler implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        sendData(String.valueOf(gcdFromList(getFirstInputs())));
+        sendData(gcdFromList(getFirstInputs()));
 
         // 3. Odbierz napis. Usuń z niego wszystkie wystąpienia 6 i odeślij wynik.
-        waitForData(1);
         data = getData();
         data = data.replace("6", "");
         sendData(data);
 
         // 4. W 5 kolejnych liniach odbierz 5 liczb(y) naturalnych(e). Policz sumę tych liczb i odeślij.
-        waitForData(5);
-//        List<Integer> numbers =
         int sum = getDataAsList(5).stream().map(Integer::parseInt).reduce(0, Integer::sum);
         data = String.valueOf(sum);
         sendData(data);
 
         // 5. Wyślij numer portu z którego się komunikujesz.
-        sendData(String.valueOf(Server.SERVER_SOCKET_PORT));
+        sendData(Server.SERVER_SOCKET_PORT);
 
         // 6. Odbierz liczbę naturalną x. Oblicz największą liczbę naturalną k, taką, że k podniesione do potęgi 2 jest nie większe niż wartość x. Odeślij wartość k.
-        waitForData(1);
         data = getData();
         int k = maxPower(Integer.parseInt(data));
-        sendData(String.valueOf(k));
+        sendData(k);
 
         // odbierz finalną flagę
-        waitForData(1);
         data = getData();
         System.err.println(data);
 
